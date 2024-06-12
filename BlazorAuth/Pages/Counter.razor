@@ -1,0 +1,94 @@
+﻿@page "/counter"
+@using Microsoft.AspNetCore.Components.QuickGrid
+
+<PageTitle>Quickgrid</PageTitle>
+<h1>Quickgrid</h1>
+
+@* 
+
+<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button> *@
+<br />
+
+<QuickGrid Items="@People" @ref="grid" Pagination="pagination">
+    <PropertyColumn Property="@(p => p.Id)" Sortable="true" IsDefaultSort="SortDirection.Ascending"></PropertyColumn>
+    <PropertyColumn Property="@(p => p.FirstName)" Sortable="true" Title="First Name" />
+    <PropertyColumn Property="@(p => p.LastName.ToUpper())" Sortable="true" Title="Last Name" />
+    <PropertyColumn Property="@(p => p.DateofBirth)" Sortable="true" Format="dd-MM-yyyy" />
+    <PropertyColumn Property="@(p => p.Score)" Sortable="true" Align="Align.Right" />
+    <PropertyColumn Property="@(p => p.Active)" Sortable="true">
+        <ColumnOptions>
+            <label>
+                <input type="checkbox" @bind="activeOnly" @bind:after="Filter" /> Actives only
+            </label>
+        </ColumnOptions>
+    </PropertyColumn>
+    @* <TemplateColumn Title="Actions">
+        <button class="btn btn-primary" @onclick="@(() => Edit(context))">Edit</button>
+    </TemplateColumn> *@
+</QuickGrid>
+
+@* <Paginator Value="@pagination" /> *@
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()   
+    {
+        currentCount++;
+    }
+
+    public IQueryable<Students> OriginalPeople { get; set; } = null!;
+    public IQueryable<Students> People { get; set; } = null!;
+
+    public string? Message { get; set; }
+    QuickGrid<Students>? grid;
+    private bool activeOnly;
+    PaginationState pagination = new PaginationState { ItemsPerPage = 10 };
+
+
+    protected override void OnInitialized()
+    {
+        OriginalPeople = GetPeople().AsQueryable();
+        People = OriginalPeople;
+    }
+    public async Task Filter()
+    {
+        if (activeOnly)
+        {
+            People = OriginalPeople.Where(p => p.Active);
+        }
+        else
+        {
+            People = OriginalPeople;
+        }
+
+        await grid!.RefreshDataAsync();
+
+    }
+    private void Edit(Students p)
+    {
+        Message = "Editing: " + p.FirstName;
+    }
+
+
+    public List<Students> GetPeople()
+    {
+        var result = new List<Students>();
+
+        for (int i = 1; i <= 100; i++)
+        {
+            result.Add(new Students
+                {
+                    Id = i,
+                    FirstName = Faker.Name.First(),
+                    LastName = Faker.Name.Last(),
+                    DateofBirth = Faker.Identification.DateOfBirth(),
+                    Active = Faker.Boolean.Random(),
+                    Score = Faker.RandomNumber.Next(100)
+                });
+        }
+        return result;
+    }
+}

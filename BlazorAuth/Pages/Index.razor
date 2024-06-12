@@ -1,0 +1,39 @@
+﻿
+@page "/"
+@inherits LayoutComponentBase
+
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
+
+
+
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<div>
+    <h3>Welcome to My Blazor App!</h3>
+
+    @if (User != null)
+    {
+        <h3>Hello, @User.Identity.Name!</h3>
+    }
+    else   
+    {
+        <p>You are not authenticated.</p>
+    }
+</div>
+
+@code {
+    private ClaimsPrincipal User { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        User = authState.User;
+    }
+
+
+
+}
+
+
