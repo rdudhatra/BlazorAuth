@@ -9,7 +9,7 @@
 <a href="/persons" class="btn btn-outline-dark">Show All</a>
 <div class="row">
     <div class="col-md-6">
-        <EditForm Model="@person" OnValidSubmit="Save">
+        <EditForm Model="@person" OnValidSubmit="SavePerson">
             <DataAnnotationsValidator />
 
             <div class="form-group">
@@ -38,13 +38,14 @@
 @code {
     [Parameter]
     public int UserId { get; set; }
+    
     private string message = string.Empty;
+    
     private Person person = new();
+    
     private string Title = "Add Person";
 
- 
-
-    private void Save()
+    private void SavePerson()
     {
         message = "wait...";
         if (personService.AddUpdate(person))
