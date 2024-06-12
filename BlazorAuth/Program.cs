@@ -16,9 +16,8 @@ builder.Services.AddAuthentication(options =>
      //Google Authentication
     .AddGoogle(googleOptions =>
     {
-	    googleOptions.ClientId = builder.Configuration.GetSection("GoogleKeys:ClientId").Value;
-	    googleOptions.ClientSecret = builder.Configuration.GetSection("GoogleKeys:ClientSecret").Value;
-
+	    googleOptions.ClientId = builder.Configuration["GoogleKeys:ClientId"];
+	    googleOptions.ClientSecret = builder.Configuration["GoogleKeys:ClientSecret"];
     })
     //Facebook Authentication
     .AddFacebook(facebookOptions =>
@@ -29,8 +28,8 @@ builder.Services.AddAuthentication(options =>
     //Twitter Authentication
     .AddTwitter(twitterOptions =>
     {
-        twitterOptions.ConsumerKey = builder.Configuration.GetSection("TwitterAuthSetting:ApiKey").Value;
-        twitterOptions.ConsumerSecret = builder.Configuration.GetSection("TwitterAuthSetting:ApiSecret").Value;
+        twitterOptions.ConsumerKey = builder.Configuration["TwitterAuthSetting:ApiKey"];
+        twitterOptions.ConsumerSecret = builder.Configuration["TwitterAuthSetting:ApiSecret"];
         twitterOptions.RetrieveUserDetails = false;
         //twitterOptions.CallbackPath = new PathString("/signin-twitter");
     })
