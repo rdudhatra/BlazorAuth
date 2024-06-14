@@ -1,4 +1,4 @@
-using BlazorAuth.Core.Services.Interface;
+
 using BlazorAuth.Core.Services;
 using BlazorAuth.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -53,8 +53,8 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddScoped<IPersonService, PersonService>();
 builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddScoped<IPersonService, PersonService>();
 
 var app = builder.Build();
 

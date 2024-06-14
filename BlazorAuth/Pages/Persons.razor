@@ -1,7 +1,11 @@
-﻿@page "/persons"
+﻿
+
+ @page "/persons"
 @inject  IPersonService personService
 @inject IJSRuntime jsRuntime
 @using BlazorAuth.Data.Models
+@using BlazorAuth.Core.Services
+
 <h3>Persons</h3>
 <a href="/person/add" class="btn btn-outline-dark my-2">Add more</a>
 <div class="row">
@@ -57,3 +61,4 @@
         base.OnInitialized();
     }
 }
+

@@ -1,7 +1,86 @@
 ﻿@page "/person/add"
-@page "/person/edit/{userId:int}"
+@page "/person/edit/{UserId:int}"
+@using BlazorAuth.Core.Services
 
 @inject IPersonService personService
+@inject NavigationManager navigationManager
+
+<PageTitle>@Title</PageTitle>
+
+<h3>@Title</h3>
+<a href="/persons" class="btn btn-outline-dark my-3">Show All</a>
+<div class="row">
+    <div class="col-md-6">
+        <EditForm Model="@person" OnValidSubmit="Save">
+            <DataAnnotationsValidator />
+
+            <div class="form-group my-2">
+                <label for="Name">Name</label>
+                <InputText class="form-control" @bind-Value="person.Name" placeholder="Enter name" />
+                <ValidationMessage For="@(() => person.Name)" class="text-danger" />
+            </div>
+
+            <div class="form-group my-2">
+                <label for="Email">Email</label>
+                <InputText class="form-control" @bind-Value="person.Email" placeholder="Enter email" />
+                <ValidationMessage For="@(() => person.Email)" class="text-danger" />
+            </div>
+
+            <div class="my-3">
+                @if (!string.IsNullOrEmpty(message))
+                {
+                    <div class="alert alert-info">@message</div>
+                }
+            </div>
+
+            <div class="my-3">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int UserId { get; set; }
+    private string message = string.Empty;
+    private BlazorAuth.Data.Models.Person person = new();
+    private string Title = "Add Person";
+
+    private void Save()
+    {
+        message = "Saving...";
+        if (personService.AddUpdate(person))
+        {
+            message = "Successfully added";
+            navigationManager.NavigateTo("/persons");
+        }
+        else
+        {
+            message = "Could not save";
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        if (UserId > 0)
+        {
+            Title = "Update Person";
+            person = personService.FindById(UserId);
+        }
+        base.OnInitialized();
+    }
+}
+
+
+
+@*  @page "/person/add"
+@page "/person/edit/{userId:int}"
+@using BlazorAuth.Core.Services
+
+@inject IPersonService personService
+@inject NavigationManager navigationManager
+
 
 <PageTitle>@Title</PageTitle>
 
@@ -9,7 +88,7 @@
 <a href="/persons" class="btn btn-outline-dark">Show All</a>
 <div class="row">
     <div class="col-md-6">
-        <EditForm Model="@person" OnValidSubmit="SavePerson">
+        <EditForm Model="@person" OnValidSubmit="Save">
             <DataAnnotationsValidator />
 
             <div class="form-group">
@@ -38,20 +117,18 @@
 @code {
     [Parameter]
     public int UserId { get; set; }
-    
     private string message = string.Empty;
-    
-    private Person person = new();
-    
+    BlazorAuth.Data.Models.Person person = new();
     private string Title = "Add Person";
 
-    private void SavePerson()
+    private void Save()
     {
         message = "wait...";
         if (personService.AddUpdate(person))
         {
             message = "Sucessfully added";
             person = new();
+            navigationManager.NavigateTo("/persons");
         }
         else
         {
@@ -69,3 +146,4 @@
         base.OnInitialized();
     }
 }
+ *@

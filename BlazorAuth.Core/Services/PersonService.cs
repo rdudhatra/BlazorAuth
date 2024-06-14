@@ -1,5 +1,4 @@
-﻿using BlazorAuth.Core.Services.Interface;
-using BlazorAuth.Data;
+﻿using BlazorAuth.Data;
 using BlazorAuth.Data.Models;
 using System;
 using System.Collections.Generic;

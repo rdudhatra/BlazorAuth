@@ -38,8 +38,4 @@
     <ProjectReference Include="..\BlazorAuth.Data\BlazorAuth.Data.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\lll1\" />
-  </ItemGroup>
-
 </Project>

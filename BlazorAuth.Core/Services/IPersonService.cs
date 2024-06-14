@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlazorAuth.Core.Services.Interface
+namespace BlazorAuth.Core.Services
 {
     public interface IPersonService
     {
