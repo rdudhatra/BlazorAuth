@@ -1,10 +1,9 @@
-﻿
-
- @page "/persons"
-@inject  IPersonService personService
+﻿@page "/persons"
+@inject IPersonService personService
 @inject IJSRuntime jsRuntime
 @using BlazorAuth.Data.Models
 @using BlazorAuth.Core.Services
+@attribute [Authorize]
 
 <h3>Persons</h3>
 <a href="/person/add" class="btn btn-outline-dark my-2">Add more</a>
@@ -19,17 +18,17 @@
                 </tr>
             </thead>
             <tbody>
-            @foreach(var person in persons)
-            {
-                <tr>
-                    <td>@person.Name</td    
-                    <td>@person.Email</td>
-                    <td>
+                @foreach (var person in persons)
+                {
+                    <tr>
+                        <td>@person.Name</td>
+                        <td>@person.Email</td>
+                        <td>
                             <a href="/person/edit/@person.Id" class="btn btn-success">Edit</a>
                             <a class="btn btn-danger" @onclick="async ()=> await Delete(person)">Delete</a>
-                    </td>
-                </tr>
-            }
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>
@@ -49,7 +48,8 @@
         bool confirmed = await jsRuntime.InvokeAsync<bool>("confirm", "Are you sure????");
         if (confirmed)
         {
-            if(personService.Delete(person.Id)){
+            if (personService.Delete(person.Id))
+            {
                 persons.Remove(person);
             }
 
